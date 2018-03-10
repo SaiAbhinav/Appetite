@@ -18,3 +18,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::middleware(['auth'])->group(function() {
+
+    Route::post('/uploadproof', 'UsersController@uploadproof');
+
+    Route::post('/updateprofile', 'UsersController@updateprofile');
+    Route::put('/updateprofile', 'UsersController@updateprofile');
+    Route::post('/approve', 'UsersController@approve');
+    Route::post('/upgraderole', 'UsersController@upgraderole');
+    Route::put('/changepassword','UsersController@changepassword');
+
+    Route::resource('users', 'UsersController'); 
+    Route::resource('wallets', 'WalletsController'); 
+          
+});

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container">    
     <div class="login-wrapper">
         <div class="login-container">
             <img src="{{ asset('images/2.png') }}" alt="logo" width="30%" height="auto" style="filter: drop-shadow(5px 5px 5px #000000); ">
@@ -13,15 +13,17 @@
                 @csrf
                 <input id="email" type="email" placeholder="Email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
                 @if ($errors->has('email'))
-                    <span class="invalid-feedback">
+                    <div class="alert alert-danger alert-dismissable fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
                         <strong>{{ $errors->first('email') }}</strong>
-                    </span>
+                    </div>
                 @endif
                 <input id="password" type="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required autofocus>
                 @if ($errors->has('password'))
-                    <span class="invalid-feedback">
+                    <div class="alert alert-danger alert-dismissable fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
                         <strong>{{ $errors->first('password') }}</strong>
-                    </span>
+                    </div>
                 @endif
                 <input type="checkbox" name="remember" style="width: 20px; height: 20px; cursor: pointer;" {{ old('remember') ? 'checked' : '' }}>
                 &nbsp;&nbsp;

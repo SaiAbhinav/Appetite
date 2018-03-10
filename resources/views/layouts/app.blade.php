@@ -13,10 +13,16 @@
     <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
     <link href="{{ asset('css/register.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/email.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/reset.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/editprofile.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/updatewallet.css') }}" rel="stylesheet">
 
     <style>
         html {
@@ -58,19 +64,23 @@
     </style>
 </head>
 <body @yield('body-changes')>
-    <div id="app">
+    <div id="app">        
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">                
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('images/3.png') }}" alt="logo" width="15%" height="auto" style="filter: drop-shadow(5px 5px 5px #000000);">
-                </a>
+            <div class="container">                            
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>            
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">&nbsp;</ul>
+                    <ul class="navbar-nav mr-auto">
+                        @guest
+                            <li></li>
+                        @else
+                            <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                        @endguest
+                        &nbsp;
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -79,16 +89,30 @@
                             <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                         @else
+                            @if(Auth::user()->role_id == 1)
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                        Admin
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="/users" style="font-size: 16px;">All Users</a>
+                                    </div>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/users/{{ Auth::user()->id }}" style="font-size: 16px;">Profile</a>
+                                    <a class="dropdown-item" href="/wallets/{{ Auth::user()->id }}" style="font-size: 16px;">Wallet</a>                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" style="font-size: 16px;" data-toggle="modal" data-target="#changePassword">Change Password</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         Logout
-                                    </a>
+                                    </a>                                    
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -99,11 +123,84 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-
+        </nav>              
+        
+        <div class="row text-center">
+            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissable fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ session('error') }}
+                    </div>
+                @endif
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissable fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ session('success') }}
+                    </div>
+                @endif
+            </div>                
+        </div>       
+        
         <main class="py-4">
             @yield('content')
         </main>
+    </div>    
+
+    <div class="content-wrapper">
+        <section class="content container-fluid">
+            <div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-dark">                            
+                            <h5 class="modal-title" id="changePasswordModalLabel" style="margin-left: 3%;color: #fff;">Change Password</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" style="color: #fff;">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">                                                               
+                            <form method="POST" action="/changepassword">
+                                @csrf
+                                <input type="hidden" name="_method" value="PUT">
+                                <div class="row">
+                                    <div class="form-group{{ $errors->has('current-password') ? ' has-error' : '' }} col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                        <label style="margin-left: 12%;">Current Password</label>
+                                        <input type="password" style="border:1px solid #000; height: 40px;color: #000;" placeholder="Current Password" name="current-password">
+                                        @if ($errors->has('current-password'))
+                                            <span class="help-block">
+                                                <strong style="margin-left: 12%;">{{ $errors->first('current-password') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }} col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                        <label style="margin-left: 12%;">New Password</label>
+                                        <input type="password" style="border:1px solid #000; height: 40px;color: #000;" placeholder="New Password" name="new-password" class="form-control">
+                                        @if ($errors->has('new-password'))
+                                            <span class="help-block">
+                                                <strong style="margin-left: 12%;">{{ $errors->first('new-password') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                        <label style="margin-left: 12%;">Confirm New Password</label>
+                                        <input type="password" style="border:1px solid #000; height: 40px;color: #000;" placeholder="Confirm Password" name="new-password_confirmation" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12 col-lg-12">                                    
+                                        <input type="submit" value="Change Password" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </form>                                               
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Scripts -->
