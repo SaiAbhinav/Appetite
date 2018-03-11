@@ -53,8 +53,9 @@ class WalletsController extends Controller
         //
         $wallet = Wallet::find($wallet->id);
         $cards = Card::where('user_id', Auth::user()->id)->get();
+        $cardwallets = Cardwallet::where('wallet_id', $wallet->id)->get();
 
-        return view('wallets.show', ['wallet' => $wallet, 'cards' => $cards]);
+        return view('wallets.show', ['wallet' => $wallet, 'cards' => $cards, 'cardwallets' => $cardwallets]);
 
     }
 
