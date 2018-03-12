@@ -25,7 +25,7 @@ class Card extends Model
     }
 
     public function cardwallets() {
-        return $this->hasManyThrough('App\Card', 'App\CardWallet');
+        return $this->hasMany('App\Cardwallet');
     }
 
     public function user() {

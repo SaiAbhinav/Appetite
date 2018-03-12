@@ -123,11 +123,11 @@ class UsersController extends Controller
 
         if($findUser) {
             return back();
-        }
+        }        
     }
 
     public function updateprofile(Request $request) {
-        
+    
         //
         $user = $request->input('user_id');
 

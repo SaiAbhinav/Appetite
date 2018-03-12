@@ -79,7 +79,7 @@ class WalletsController extends Controller
      */
     public function update(Request $request, Wallet $wallet)
     {
-        //
+        //        
         $amount = $request->input('amount');
         $value = (double)$amount;
 
@@ -92,6 +92,14 @@ class WalletsController extends Controller
             'wallet_balance' => $newamount
         ]);
 
+        if($walletAmountUpdate) {
+            $addRecord = Cardwallet::create([
+                'wallet_id' => $wallet->id,
+                'card_no' => $request->input('card_no'),
+                'amount_added' => $amount
+            ]);
+        }
+
         $saveCard = Card::updateOrCreate([
             'user_id' => Auth::user()->id,
             'card_name' => $request->input('card_name'),
@@ -99,13 +107,7 @@ class WalletsController extends Controller
             'valid_thru_month' => $request->input('valid_thru_month'),
             'valid_thru_year' => $request->input('valid_thru_year'),
             'card_pin' => $request->input('card_pin')
-        ]);
-
-        $addRecord = Cardwallet::create([
-            'wallet_id' => $wallet->id,
-            'card_id' => $saveCard->id,
-            'amount_added' => $amount
-        ]);
+        ]);        
 
         if($walletAmountUpdate && $saveCard) {
             return redirect()->route('wallets.show', ['wallet' => $wallet->id]);
@@ -123,5 +125,9 @@ class WalletsController extends Controller
     public function destroy(Wallet $wallet)
     {
         //
+    }
+
+    public function updatewallet(Wallet $wallet, Request $request) {
+        return $wallet->id;
     }
 }
