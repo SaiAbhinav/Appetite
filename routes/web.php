@@ -29,7 +29,11 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/upgraderole', 'UsersController@upgraderole');
     Route::put('/changepassword','UsersController@changepassword');
 
+    Route::post('/account-to-wallet/{id}', 'WalletsController@updatewallet');
+    Route::put('/account-to-wallet/{id}', 'WalletsController@updatewallet');
+
     Route::resource('users', 'UsersController'); 
     Route::resource('wallets', 'WalletsController'); 
+    Route::resource('cards', 'CardsController'); 
           
 });

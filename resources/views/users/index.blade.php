@@ -11,7 +11,8 @@
                 <input id="myInput" class="form-control float-right" type="text" placeholder="Filter Users..." style="width: 50%;">
             </div>                
         </div>
-    </div>      
+    </div> 
+    <br>     
     <div class="table-responsive table-hover">        
         <table id="users" class="table">            
             <thead class="thead-dark">
@@ -78,21 +79,11 @@
                             @endif
                         </td>
                         <td>
-                            @if($user->id != Auth::user()->id)
-                                <a href="#" class="btn btn-sm btn-danger"
-                                    onclick="
-                                        var result = confirm('Are you sure you wish to delete this Company?');
-                                        if(result) {
-                                            event.preventDefault();
-                                            document.getElementById('delete-form').submit();
-                                        }
-                                    "
-                                >
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                                <form id="delete-form" action="/users/{{ $user->id }}" method="post" style="display: none;">
+                            @if($user->id != Auth::user()->id)                                                                
+                                <form id="delete-form" action="/users/{{ $user->id }}" method="post">
                                     @csrf
-                                    <input type="hidden" name="_method" value="delete">                                    
+                                    <input type="hidden" name="_method" value="delete">             
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>                       
                                 </form>                              
                             @endif
                         </td>

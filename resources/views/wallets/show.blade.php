@@ -27,7 +27,7 @@
         <div class="card-content">
             <div class="tab">
                 <button class="tablinks" onclick="openTab(event, 'card')" id="defaultOpen">Card</button>
-                <button class="tablinks" onclick="openTab(event, 'account')">Account</button>
+                <button class="tablinks" onclick="openTab(event, 'account')" style="border-bottom: 1px solid lightgrey;">Account</button>
                 <button class="tablinks" onclick="openTab(event, 'history')">History</button>
             </div>        
             <div id="card" class="tabcontent">
@@ -44,7 +44,7 @@
                 <div class="tab-content">
                     <div id="savedcard" class="container tab-pane active"><br>
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                            <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
                                 <div class="table-responsive table-hover">
                                     <table class="table"> 
                                         <thead class="thead-dark">
@@ -71,20 +71,10 @@
                                                     {{ $carddisp }}
                                                 </td>
                                                 <td>                                                
-                                                    <a href="#" class="btn btn-secondary btn-sm"
-                                                        onclick="
-                                                            var result = confirm('Are you sure you wish to delete this Company?');
-                                                            if(result) {
-                                                                event.preventDefault();
-                                                                document.getElementById('delete-form').submit();
-                                                            }
-                                                        "
-                                                    >
-                                                    <i class="fas fa-times"></i>
-                                                    </a>
-                                                    <form id="delete-form" action="/wallets/{{ $card->id }}" method="post" style="display: none;">
+                                                    <form id="delete-form" action="/cards/{{ $card->id }}" method="post">
                                                         @csrf
-                                                        <input type="hidden" name="_method" value="delete">                                    
+                                                        <input type="hidden" name="_method" value="delete">             
+                                                        <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-times"></i></button>                      
                                                     </form>                                                                         
                                                 </td>
                                             </tr>                    
@@ -132,7 +122,11 @@
                                     <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
                                         <div class="form-group">
                                             <label>CVV</label>
-                                            <input type="text" name="card_pin" class="form-control">
+                                            <input type="password" name="card_pin" class="form-control" style="
+                                            width: 100%;
+                                            height: 35px;
+                                            border: 1px solid #000;                                                
+                                        ">
                                         </div>                                          
                                     </div>
                                 </div>
@@ -155,8 +149,83 @@
                 </div>
             </div>        
             <div id="account" class="tabcontent">
-                <h3>Account</h3>
-                <p>Paris is the capital of France.</p> 
+                <!-- Nav pills -->
+                <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#savedaccount">Saved Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#newaccount">New Account</a>
+                    </li>                                   
+                </ul>              
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div id="savedaccount" class="container tab-pane"><br>
+                        <div class="table-responsive table-hover">
+                            <table class="table"> 
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Account Number</th>
+                                        <th>Amount</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>                                                                        
+                                <tbody>   
+                                    
+                                </tbody>
+                            </table>
+                        </div>                    
+                    </div>
+                    <div id="newaccount" class="container tab-pane fade"><br>
+                        <form method="POST" action="/accounttowallet/{{ $wallet->id }}">
+                            @csrf
+                            <input type="hidden" name="_method" value="put">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>Account Number</label>
+                                            <input type="text" name="acc_no" class="form-control">
+                                        </div>                                                                                
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>Account Name</label>
+                                            <input type="text" name="acc_name" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>Account Password</label>
+                                            <input type="password" name="acc_pass" class="form-control" style="
+                                                width: 100%;
+                                                height: 35px;
+                                                border: 1px solid #000;                                                
+                                            ">
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Amount</label>
+                                            <input type="text" name="amount" class="form-control">
+                                        </div>                                         
+                                    </div>
+                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-primary float-right" value="Add" style="width: 25%;margin-top: 8%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>                     
+                    </div>                    
+                </div> 
             </div>            
             <div id="history" class="tabcontent">
                 <!-- Nav pills -->
@@ -183,7 +252,18 @@
                                 <tbody>   
                                     @foreach($cardwallets as $cardwallet) 
                                         <tr>
-                                            <td></td>
+                                            <td>
+                                                <?php
+                                                    $cardtemp = $cardwallet->card_no;        
+                                                    $carddisp = "";
+                                                    for($i = 1; $i < strlen($cardtemp)-4; $i++) {
+                                                        $carddisp = $carddisp."x";
+                                                    }
+                                        
+                                                    $carddisp = $carddisp."".substr($cardtemp, -4);
+                                                ?>
+                                                {{ $carddisp }}
+                                            </td>
                                             <td>{{ number_format((float)$cardwallet->amount_added, 2, '.', '') }}</td>
                                             <td>{{ $cardwallet->created_at }}</td>                                            
                                         </tr>
