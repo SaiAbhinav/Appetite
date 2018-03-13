@@ -41,10 +41,10 @@
                     </li>                                   
                 </ul>              
                 <!-- Tab panes -->
-                <div class="tab-content">
-                    <div id="savedcard" class="container tab-pane active"><br>
+                <div class="tab-content">                    
+                    <div id="savedcard" class="container tab-pane active"><br>                        
                         <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                            <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">                                     
                                 <div class="table-responsive table-hover">
                                     <table class="table"> 
                                         <thead class="thead-dark">
@@ -67,21 +67,29 @@
                                                         }
                                             
                                                         $carddisp = $carddisp."".substr($cardtemp, -4);
-                                                    ?>
-                                                    {{ $carddisp }}
+                                                    ?>                                                                                                       
+                                                    <button class="btn btn-link"                                                    
+                                                            data-toggle="modal"
+                                                            data-target="#AddtoWalletModel"
+                                                            data-card_id={{ $card->id }}
+                                                            data-card_no={{ $card->card_no }}
+                                                            data-dispcard={{ $carddisp }}                                                                                                                                
+                                                    >
+                                                        {{ $carddisp }}
+                                                    </button>                                                                                                       
                                                 </td>
                                                 <td>                                                
                                                     <form id="delete-form" action="/cards/{{ $card->id }}" method="post">
                                                         @csrf
                                                         <input type="hidden" name="_method" value="delete">             
                                                         <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-times"></i></button>                      
-                                                    </form>                                                                         
+                                                    </form>                                                                                                                       
                                                 </td>
                                             </tr>                    
                                             @endforeach                    
                                         </tbody>
                                     </table>
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>
@@ -126,7 +134,7 @@
                                             width: 100%;
                                             height: 35px;
                                             border: 1px solid #000;                                                
-                                        ">
+                                            ">
                                         </div>                                          
                                     </div>
                                 </div>
@@ -139,7 +147,7 @@
                                     </div>
                                     <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
                                         <div class="form-group">
-                                            <input type="submit" class="btn btn-primary float-right" value="Add" style="width: 25%;margin-top: 8%;">
+                                            <input type="submit" class="btn btn-primary float-right form-control" value="Add" style="width: 25%;margin-top: 8%;">
                                         </div>
                                     </div>
                                 </div>
@@ -177,9 +185,10 @@
                         </div>                    
                     </div>
                     <div id="newaccount" class="container tab-pane fade"><br>
-                        <form method="POST" action="/accounttowallet/{{ $wallet->id }}">
+                        <form method="POST" action="/account-to-wallet">
                             @csrf
                             <input type="hidden" name="_method" value="put">
+                            <input type="hidden" name="accwallet_id" value="{{ $wallet->id }}">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -281,6 +290,68 @@
     </div>
 </div>
 
+<div class="content-wrapper">
+        <section class="content container-fluid">
+            <div class="modal fade" id="AddtoWalletModel" tabindex="-1" role="dialog" aria-labelledby="AddtoWalletLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th style="border:none;">Card Number</th>
+                                        <td id="savedcard_dispno" style="border:none;"></td>
+                                    </tr>                                                                            
+                                </tbody>
+                            </table>
+                            <div class="container">                                
+                                <h5><b>Enter the following to add to wallet using this card</b></h5>
+                                <hr>
+                                <form method="POST" action="/savedcard">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="put">  
+                                    <input type="hidden" id="savedcard_no" name="savedcard_no" value="">
+                                    <input type="hidden" name="wallet_id" value="{{ $wallet->id }}">                                  
+                                    <div class="row">                                    
+                                        <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label>CVV</label>
+                                                <input type="password" name="savedcard_pin" class="form-control" style="
+                                                    width: 100%;
+                                                    height: 35px;
+                                                    border: 1px solid #000;
+                                                    color: #000;                                                
+                                                ">
+                                            </div>
+                                        </div>    
+                                        <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label>Amount</label>
+                                                <input type="text" name="savedcard_amount" class="form-control">
+                                            </div>                                         
+                                        </div>                                      
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                            <div class="form-group">
+                                                <input type="submit" class="btn btn-primary form-control" value="Add">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>                                
+                            </div>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
 <script>
     function openTab(evt, tabType) {
         var i, tabcontent, tablinks;
@@ -298,5 +369,19 @@
     
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
+</script>
+<script>
+        $(document).ready(function(){
+            $('#AddtoWalletModel').on('shown.bs.modal', function (event) {
+        
+                var button = $(event.relatedTarget)                                
+                var no = button.data('card_no')                
+                var dispno = button.data('dispcard')
+
+                var modal = $(this)  
+                modal.find('#savedcard_dispno').text(dispno)   
+                modal.find('#savedcard_no').val(no)                                                                                 
+              })
+        });
 </script>
 @endsection
