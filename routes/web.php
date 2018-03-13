@@ -29,8 +29,8 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/upgraderole', 'UsersController@upgraderole');
     Route::put('/changepassword','UsersController@changepassword');
 
-    Route::post('/account-to-wallet/{id}', 'WalletsController@updatewallet');
-    Route::put('/account-to-wallet/{id}', 'WalletsController@updatewallet');
+    Route::post('/savedcard', 'WalletsController@updatefromsavedcard');
+    Route::put('/savedcard', 'WalletsController@updatefromsavedcard');
 
     Route::resource('users', 'UsersController'); 
     Route::resource('wallets', 'WalletsController'); 

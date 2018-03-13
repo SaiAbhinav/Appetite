@@ -127,7 +127,36 @@ class WalletsController extends Controller
         //
     }
 
-    public function updatewallet(Wallet $wallet, Request $request) {
-        return $wallet->id;
+    public function updatefromsavedcard(Request $request) {        
+        $amount = $request->input('savedcard_amount');
+        $value = (double)$amount;
+
+        $wallet = Wallet::where('id', $request->input('wallet_id'))->first();
+        $oldamount = $wallet->wallet_balance;
+
+        $card = Card::where('card_no', $request->input('savedcard_no'))->first();        
+
+        if($card->card_pin == $request->input('savedcard_pin')) {
+            $newamount = $amount + $oldamount;
+
+            $walletAmountUpdate = Wallet::where('id', $request->input('wallet_id'))->update([
+                'wallet_balance' => $newamount
+            ]);
+    
+            if($walletAmountUpdate) {
+                $addRecord = Cardwallet::create([
+                    'wallet_id' => $request->input('wallet_id'),
+                    'card_no' => $request->input('savedcard_no'),
+                    'amount_added' => $amount
+                ]);
+            }
+    
+            if($addRecord) {
+                return redirect()->route('wallets.show', ['wallet' => $wallet->id]); 
+            }
+
+        }else {
+            return back()->withInput();
+        }
     }
 }
