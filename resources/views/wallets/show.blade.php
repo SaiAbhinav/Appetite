@@ -40,7 +40,7 @@
                         <a class="nav-link" data-toggle="pill" href="#newcard">New Card</a>
                     </li>                                   
                 </ul>              
-                <!-- Tab panes -->
+                
                 <div class="tab-content">
                     <div id="savedcard" class="container tab-pane active"><br>
                         <div class="row">
