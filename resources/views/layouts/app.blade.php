@@ -14,9 +14,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/feedback.css') }}" rel="stylesheet">    
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
     <link href="{{ asset('css/register.css') }}" rel="stylesheet">
     <link href="{{ asset('css/email.css') }}" rel="stylesheet">
@@ -64,7 +66,7 @@
     </style>
 </head>
 <body @yield('body-changes')>
-    <div id="app">        
+    <div id="app">     
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">                            
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,8 +124,8 @@
                         @endguest
                     </ul>
                 </div>
-            </div>
-        </nav>              
+            </div>            
+        </nav>            
         
         <div class="row text-center">
             <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
@@ -140,11 +142,60 @@
                     </div>
                 @endif
             </div>                
-        </div>       
+        </div> 
         
         <main class="py-4">
             @yield('content')
         </main>
+
+        @guest
+        @else
+        <div class="zoom">
+            <a class="zoom-fab zoom-btn-large" id="zoomBtn" style="color: #fff;font-size: 23px;"  data-toggle="tooltip" data-placement="left" title="Give Feedback"><i class="fas fa-thumbs-up"></i></a>
+            <div class="zoom-card scale-transition scale-out">
+                <div class="row">
+                    <form method="POST" action="/feedbacks">
+                        @csrf                        
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Feedback Type</label>
+                                <input type="text" name="feedback_type" class="form-control" style="min-width: 250px;">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Comment</label>
+                                <textarea name="comment" class="form-control" rows="3" style="min-width: 250px;"></textarea>
+                            </div>
+                        </div>
+                        <h5 class="text-center">Rate Us out of 5</h5>
+                        <div class="stars">
+                            <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
+                            <label class="star star-5" for="star-5"></label>
+
+                            <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
+                            <label class="star star-4" for="star-4"></label>
+
+                            <input class="star star-3" id="star-3" type="radio" name="star" value="3"/>
+                            <label class="star star-3" for="star-3"></label>
+
+                            <input class="star star-2" id="star-2" type="radio" name="star" value="2"/>
+                            <label class="star star-2" for="star-2"></label>
+
+                            <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
+                            <label class="star star-1" for="star-1"></label>
+                        </div>
+
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <input type="submit" value="Give Feedback" class="btn btn-primary form-control">
+                            </div>
+                        </div>
+                    </form>                    
+                </div>
+            </div>
+        </div>  
+        @endguest  
     </div>    
 
     <div class="content-wrapper">
@@ -205,5 +256,14 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <script>
+        $('#zoomBtn').click(function() {            
+            $('.zoom-card').toggleClass('scale-out');            
+        });
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
 </body>
 </html>
