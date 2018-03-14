@@ -35,5 +35,6 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('users', 'UsersController'); 
     Route::resource('wallets', 'WalletsController'); 
     Route::resource('cards', 'CardsController'); 
+    Route::resource('feedbacks', 'FeedbacksController'); 
           
 });
