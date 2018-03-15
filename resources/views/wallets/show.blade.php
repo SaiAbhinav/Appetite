@@ -26,9 +26,9 @@
         </div>
         <div class="card-content">
             <div class="tab">
-                <button class="tablinks" onclick="openTab(event, 'card')" id="defaultOpen">Card</button>
-                <button class="tablinks" onclick="openTab(event, 'account')" style="border-bottom: 1px solid lightgrey;">Account</button>
-                <button class="tablinks" onclick="openTab(event, 'history')">History</button>
+                <button class="tablinks text-center" onclick="openTab(event, 'card')" id="defaultOpen"><i class="far fa-credit-card"></i></button>
+                <button class="tablinks text-center" onclick="openTab(event, 'account')" style="border-bottom: 1px solid lightgrey;"><i class="fas fa-university"></i></button>
+                <button class="tablinks text-center" onclick="openTab(event, 'history')"><i class="fas fa-history"></i></button>
             </div>        
             <div id="card" class="tabcontent">
                 <!-- Nav pills -->
@@ -139,15 +139,28 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                    <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
                                         <div class="form-group">
                                             <label>Amount</label>
                                             <input type="text" name="amount" class="form-control">
                                         </div>                                         
                                     </div>
-                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                    <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="margin-top: 3%;">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                                                <p>Save Card</p>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">                                                    
+                                                <label class="switch">                                            
+                                                    <input type="checkbox" name="check" value="check">
+                                                <span class="slider round"></span>
+                                            </label>                                                         
+                                        </div>
+                                    </div>                                                                                                                                                              
+                                    </div>
+                                    <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
                                         <div class="form-group">
-                                            <input type="submit" class="btn btn-primary float-right form-control" value="Add" style="width: 25%;margin-top: 8%;">
+                                            <input type="submit" class="btn btn-primary float-right form-control" value="Add" style="margin-top: 10%;">
                                         </div>
                                     </div>
                                 </div>
@@ -157,84 +170,60 @@
                 </div>
             </div>        
             <div id="account" class="tabcontent">
-                <!-- Nav pills -->
-                <ul class="nav nav-pills" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="pill" href="#savedaccount">Saved Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="pill" href="#newaccount">New Account</a>
-                    </li>                                   
-                </ul>              
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div id="savedaccount" class="container tab-pane"><br>
-                        <div class="table-responsive table-hover">
-                            <table class="table"> 
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Account Number</th>
-                                        <th>Amount</th>
-                                        <th>Time</th>
-                                    </tr>
-                                </thead>                                                                        
-                                <tbody>   
-                                    
-                                </tbody>
-                            </table>
-                        </div>                    
-                    </div>
-                    <div id="newaccount" class="container tab-pane fade"><br>
-                        <form method="POST" action="/account-to-wallet">
-                            @csrf
-                            <input type="hidden" name="_method" value="put">
-                            <input type="hidden" name="accwallet_id" value="{{ $wallet->id }}">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                        <div class="form-group">
-                                            <label>Account Number</label>
-                                            <input type="text" name="acc_no" class="form-control">
-                                        </div>                                                                                
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                        <div class="form-group">
-                                            <label>Account Name</label>
-                                            <input type="text" name="acc_name" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                        <div class="form-group">
-                                            <label>Account Password</label>
-                                            <input type="password" name="acc_pass" class="form-control" style="
-                                                width: 100%;
-                                                height: 35px;
-                                                border: 1px solid #000;                                                
-                                            ">
-                                        </div>
-                                    </div>
-                                </div>                                
-                                <div class="row">
-                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label>Amount</label>
-                                            <input type="text" name="amount" class="form-control">
-                                        </div>                                         
-                                    </div>
-                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                                        <div class="form-group">
-                                            <input type="submit" class="btn btn-primary float-right" value="Add" style="width: 25%;margin-top: 8%;">
-                                        </div>
-                                    </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                        <h3 style="margin-left: 1%;">Account Details</h3>    
+                    </div>    
+                </div>                            
+                <form method="POST" action="/account-to-wallet">
+                    @csrf
+                    <input type="hidden" name="_method" value="put">
+                    <input type="hidden" name="accwallet_id" value="{{ $wallet->id }}">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                <div class="form-group">
+                                    <label>Account Number</label>
+                                    <input type="text" name="acc_no" class="form-control">
+                                </div>                                                                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                <div class="form-group">
+                                    <label>Account Name</label>
+                                    <input type="text" name="acc_name" class="form-control">
                                 </div>
                             </div>
-                        </form>                     
-                    </div>                    
-                </div> 
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                <div class="form-group">
+                                    <label>Account Password</label>
+                                    <input type="password" name="acc_pass" class="form-control" style="
+                                        width: 100%;
+                                        height: 35px;
+                                        border: 1px solid #000;                                                
+                                    ">
+                                </div>
+                            </div>
+                        </div>                                
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="text" name="acc_amount" class="form-control">
+                                </div>                                         
+                            </div>
+                            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary form-control" value="Add" style="margin-top: 7%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form> 
+                <div>&nbsp;</div>                    
             </div>            
             <div id="history" class="tabcontent">
                 <!-- Nav pills -->
@@ -255,7 +244,12 @@
                                     <tr>
                                         <th>Card Number</th>
                                         <th>Amount</th>
-                                        <th>Time</th>
+                                        <th>
+                                            Time
+                                            <a class="float-right" onclick="document.getElementById('form-clear-card-history').submit();" data-toggle="tooltip" title="Clear Card History">
+                                                <i class="fas fa-eraser"></i>
+                                            </a>
+                                        </th>                                        
                                     </tr>
                                 </thead>                                                                        
                                 <tbody>   
@@ -274,7 +268,7 @@
                                                 {{ $carddisp }}
                                             </td>
                                             <td>{{ number_format((float)$cardwallet->amount_added, 2, '.', '') }}</td>
-                                            <td>{{ $cardwallet->created_at }}</td>                                            
+                                            <td>{{ $cardwallet->created_at }}</td>                                                                                      
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -282,12 +276,63 @@
                         </div>                    
                     </div>
                     <div id="accounthistory" class="container tab-pane fade"><br>
-                        
+                        <div class="table-responsive table-hover">
+                            <table class="table"> 
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Account Number</th>
+                                        <th>Amount</th>
+                                        <th>
+                                            Time
+                                            <a class="float-right" onclick="document.getElementById('form-clear-acc-history').submit();" data-toggle="tooltip" title="Clear Account History">
+                                                <i class="fas fa-eraser"></i>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>                                                                        
+                                <tbody>   
+                                    @foreach($accountwallets as $accountwallet) 
+                                        <tr>
+                                            <td>
+                                                <?php
+                                                    $acctemp = $accountwallet->account_no;        
+                                                    $accdisp = "";
+                                                    for($i = 1; $i < strlen($acctemp)-4; $i++) {
+                                                        $accdisp = $accdisp."x";
+                                                    }
+                                            
+                                                    $accdisp = $accdisp."".substr($acctemp, -4);
+                                                ?>
+                                                {{ $accdisp }}
+                                            </td>
+                                            <td>{{ number_format((float)$accountwallet->amount_added, 2, '.', '') }}</td>
+                                            <td>{{ $accountwallet->created_at }}</td>                                            
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div> 
                     </div>                    
                 </div>             
             </div>    
         </div>
     </div>
+</div>
+
+<div style="visibility: hidden;">
+    <form id="form-clear-acc-history" action="/clear-account-history" method="post">
+        @csrf
+        <input type="hidden" name="_method" value="delete">
+        <input type="hidden" name="clear_acc_wallet_id" value="{{ $wallet->id }}">             
+        <input type="submit">                     
+    </form>
+
+    <form id="form-clear-card-history" action="/clear-card-history" method="post">
+        @csrf
+        <input type="hidden" name="_method" value="delete">
+        <input type="hidden" name="clear_card_wallet_id" value="{{ $wallet->id }}">             
+        <input type="submit">                     
+    </form>
 </div>
 
 <div class="content-wrapper">
@@ -382,6 +427,10 @@
                 modal.find('#savedcard_dispno').text(dispno)   
                 modal.find('#savedcard_no').val(no)                                                                                 
               })
+        });
+
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
         });
 </script>
 @endsection

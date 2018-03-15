@@ -6,6 +6,7 @@ use App\Wallet;
 use App\User;
 use App\Card;
 use App\Cardwallet;
+use App\Accountwallet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -54,8 +55,9 @@ class WalletsController extends Controller
         $wallet = Wallet::find($wallet->id);
         $cards = Card::where('user_id', Auth::user()->id)->get();
         $cardwallets = Cardwallet::where('wallet_id', $wallet->id)->get();
+        $accountwallets = Accountwallet::where('wallet_id', $wallet->id)->get();
 
-        return view('wallets.show', ['wallet' => $wallet, 'cards' => $cards, 'cardwallets' => $cardwallets]);
+        return view('wallets.show', ['wallet' => $wallet, 'cards' => $cards, 'cardwallets' => $cardwallets, 'accountwallets' => $accountwallets]);
 
     }
 
@@ -79,7 +81,7 @@ class WalletsController extends Controller
      */
     public function update(Request $request, Wallet $wallet)
     {
-        //        
+        //      from new card  
         $amount = $request->input('amount');
         $value = (double)$amount;
 
@@ -100,16 +102,18 @@ class WalletsController extends Controller
             ]);
         }
 
-        $saveCard = Card::updateOrCreate([
-            'user_id' => Auth::user()->id,
-            'card_name' => $request->input('card_name'),
-            'card_no' => $request->input('card_no'),
-            'valid_thru_month' => $request->input('valid_thru_month'),
-            'valid_thru_year' => $request->input('valid_thru_year'),
-            'card_pin' => $request->input('card_pin')
-        ]);        
+        if($request->input('check') == "check") {
+            $saveCard = Card::updateOrCreate([
+                'user_id' => Auth::user()->id,
+                'card_name' => $request->input('card_name'),
+                'card_no' => $request->input('card_no'),
+                'valid_thru_month' => $request->input('valid_thru_month'),
+                'valid_thru_year' => $request->input('valid_thru_year'),
+                'card_pin' => $request->input('card_pin')
+            ]); 
+        }       
 
-        if($walletAmountUpdate && $saveCard) {
+        if($walletAmountUpdate) {
             return redirect()->route('wallets.show', ['wallet' => $wallet->id]);
         }
 
@@ -157,6 +161,49 @@ class WalletsController extends Controller
 
         }else {
             return back()->withInput();
+        }
+    }
+
+    public function updatefromaccount(Request $request) {
+        $amount = $request->input('acc_amount');
+        $value = (double)$amount;
+
+        $wallet = Wallet::where('id', $request->input('accwallet_id'))->first();
+        $oldamount = $wallet->wallet_balance;
+        $newamount = $amount + $oldamount;
+
+        $walletAmountUpdate = Wallet::where('id', $request->input('accwallet_id'))->update([
+            'wallet_balance' => $newamount
+        ]);
+    
+        if($walletAmountUpdate) {
+            $addRecord = Accountwallet::create([
+                'wallet_id' => $request->input('accwallet_id'),
+                'account_no' => $request->input('acc_no'),
+                'amount_added' => $amount
+            ]);
+        }
+    
+        if($addRecord) {
+            return redirect()->route('wallets.show', ['wallet' => $wallet->id]); 
+        }else {
+            return back()->withInput();
+        }
+    }
+
+    public function clearacchistory(Request $request) {
+        $findRecord = Accountwallet::where('wallet_id', $request->input('clear_acc_wallet_id'))->delete();
+
+        if($findRecord) {
+            return back();
+        }
+    }
+
+    public function clearcardhistory(Request $request) {
+        $findRecord = Cardwallet::where('wallet_id', $request->input('clear_card_wallet_id'))->delete();
+
+        if($findRecord) {
+            return back();
         }
     }
 }

@@ -9,7 +9,7 @@ class AccountWallet extends Model
     //
     protected $fillable = [
         'wallet_id',
-        'account_id',
+        'account_no',
         'amount_added',
     ];
 
