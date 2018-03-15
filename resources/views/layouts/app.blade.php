@@ -25,6 +25,7 @@
     <link href="{{ asset('css/reset.css') }}" rel="stylesheet">
     <link href="{{ asset('css/editprofile.css') }}" rel="stylesheet">
     <link href="{{ asset('css/updatewallet.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/savecard.css') }}" rel="stylesheet">
 
     <style>
         html {
@@ -151,7 +152,7 @@
         @guest
         @else
         <div class="zoom">
-            <a class="zoom-fab zoom-btn-large" id="zoomBtn" style="color: #fff;font-size: 23px;"  data-toggle="tooltip" data-placement="left" title="Give Feedback"><i class="fas fa-thumbs-up"></i></a>
+            <a class="zoom-fab zoom-btn-large" id="zoomBtn" style="color: #fff;font-size: 23px;" data-toggle="tooltip" data-placement="left" title="Give Feedback"><i class="fas fa-thumbs-up"></i></a>
             <div class="zoom-card scale-transition scale-out">
                 <div class="row">
                     <form method="POST" action="/feedbacks">
@@ -205,8 +206,8 @@
                     <div class="modal-content">
                         <div class="modal-header bg-dark">                            
                             <h5 class="modal-title" id="changePasswordModalLabel" style="margin-left: 3%;color: #fff;">Change Password</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true" style="color: #fff;">&times;</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                                    <i class="fas fa-times"></i>
                             </button>
                         </div>
                         <div class="modal-body">                                                               

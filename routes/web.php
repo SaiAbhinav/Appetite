@@ -32,6 +32,15 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/savedcard', 'WalletsController@updatefromsavedcard');
     Route::put('/savedcard', 'WalletsController@updatefromsavedcard');
 
+    Route::post('/account-to-wallet', 'WalletsController@updatefromaccount');
+    Route::put('/account-to-wallet', 'WalletsController@updatefromaccount');
+
+    Route::post('/clear-account-history', 'WalletsController@clearacchistory');
+    Route::delete('/clear-account-history', 'WalletsController@clearacchistory');
+
+    Route::post('/clear-card-history', 'WalletsController@clearcardhistory');
+    Route::delete('/clear-card-history', 'WalletsController@clearcardhistory');
+
     Route::resource('users', 'UsersController'); 
     Route::resource('wallets', 'WalletsController'); 
     Route::resource('cards', 'CardsController'); 
