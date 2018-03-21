@@ -26,14 +26,14 @@
                         <strong>{{ $errors->first('email') }}</strong>
                     </div>
                 @endif
-                <input id="password" type="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                <input id="password" type="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required style="border: 1px solid #fff;">
                 @if ($errors->has('password'))
                     <div class="alert alert-danger alert-dismissable fade show">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         <strong>{{ $errors->first('password') }}</strong>
                     </div>
                 @endif
-                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
+                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required style="border: 1px solid #fff;">
                 <br />
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>

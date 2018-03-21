@@ -18,18 +18,14 @@
                         <strong>{{ $errors->first('email') }}</strong>
                     </div>
                 @endif
-                <input id="password" type="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required autofocus>
+                <input id="password" type="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required autofocus style="border:1px solid #fff;">
                 @if ($errors->has('password'))
                     <div class="alert alert-danger alert-dismissable fade show">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         <strong>{{ $errors->first('password') }}</strong>
                     </div>
-                @endif
-                <input type="checkbox" name="remember" style="width: 20px; height: 20px; cursor: pointer;" {{ old('remember') ? 'checked' : '' }}>
-                &nbsp;&nbsp;
-                <strong style="color: #fff;">Remember Me</strong>
-                <br />
-                <br />
+                @endif                
+                <br />                
                 <button type="submit" class="btn btn-primary">Login</button>
                 <br />
                 <a class="btn btn-link" style="color: #fff;font-weight: bold;" href="{{ route('password.request') }}">Forgot Your Password?</a>                    
