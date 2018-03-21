@@ -69,10 +69,10 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        //        
         $user = User::find($user->id);
 
-        return view('users.edit', ['user' => $user]);
+        return view('users.edit', ['user' => $user]);        
     }
 
     /**
@@ -84,26 +84,25 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
-        $userUpdate = User::where('id', $user->id)
-                            ->update([
-                                'first_name' => $request->input('first_name'),
-                                'last_name' => $request->input('last_name'),
-                                'date_of_birth' => $request->input('date_of_birth'),
-                                'gender' => $request->input('gender'),
-                                'phone_no' => $request->input('phone_no'),
-                                'area' => $request->input('area'),
-                                'pin_code' => $request->input('pin_code'),
-                                'city' => $request->input('city'),
-                                'state' => $request->input('state'),
-                                'country' => $request->input('country')
-                            ]);  
-
-        if($userUpdate) {        
-            return redirect()->route('users.show', ['user' => $user->id]);
-        }
-
-        return back()->withInput();
+        //        
+            $userUpdate = User::where('id', $user->id)
+                ->update([
+                    'first_name' => $request->input('first_name'),
+                    'last_name' => $request->input('last_name'),
+                    'date_of_birth' => $request->input('date_of_birth'),
+                    'gender' => $request->input('gender'),
+                    'phone_no' => $request->input('phone_no'),
+                    'area' => $request->input('area'),
+                    'pin_code' => $request->input('pin_code'),
+                    'city' => $request->input('city'),
+                    'state' => $request->input('state'),
+                    'country' => $request->input('country')
+                ]); 
+            
+            if($userUpdate) {        
+                return redirect()->route('users.show', ['user' => $user->id])->with('success', 'Profile Successfully Updated!');
+            }    
+            return back()->withInput()->with('error', 'Error ! Please try again !');
     }
 
     /**
@@ -122,8 +121,9 @@ class UsersController extends Controller
         $findUser->delete();        
 
         if($findUser) {
-            return back();
+            return back()->with('success', 'User is successfully deleted !');
         }        
+        return back()->with('error', 'Error ! Please try again !');
     }
 
     public function updateprofile(Request $request) {
@@ -144,7 +144,11 @@ class UsersController extends Controller
             'avatar' => $avatar->getClientOriginalName()
         ]);
 
-        return redirect()->route('users.show', ['user' => $user]);
+        if($updateavatar) {
+            return redirect()->route('users.show', ['user' => $user])->with('success', 'Profile Image Successfully Updated!');
+        }        
+
+        return back()->withInput()->with('error', 'Error ! Please try again !');        
     }
 
     public function uploadproof(Request $request) {
@@ -170,10 +174,10 @@ class UsersController extends Controller
         $uploadproof->save();
 
         if($uploadproof) {
-            return redirect()->route('users.show', ['user' => $user]);
+            return redirect()->route('users.show', ['user' => $user])->with('success', 'Document Successfully Uploaded!');;
         }
 
-        return back()->withInput();
+        return back()->withInput()->with('error', 'Error ! Please try again !');
     }
 
     public function approve(Request $request) {
@@ -185,11 +189,11 @@ class UsersController extends Controller
             'status' => $proofstatus
         ]);
 
-        if($approval) {
-            return back();
+        if($approval) {            
+            return back()->with('success', 'KYC is approved successfully !');
         }
 
-        return back()->withInput();
+        return back()->withInput()->with('error', 'Error ! Please try again !');
     }
 
     public function upgraderole(Request $request) {
@@ -205,10 +209,10 @@ class UsersController extends Controller
         ]);
 
         if($upgrade) {
-            return back();
+            return back()->with('success', 'User\'s role updated successfully !');
         }
 
-        return back()->withInput();
+        return back()->withInput()->with('error', 'Error ! Please try again !');
     }
 
     public function changepassword(Request $request){

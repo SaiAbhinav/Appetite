@@ -1,35 +1,26 @@
 @extends('layouts.app')
 
+@section('body-changes') 
+    style=" background-image: url('/images/profile-bg.jpg'); background-size: cover;"
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4">
-            <div class="card">
-                <div class="card-header">
-                    Profile Pic
-                </div>
+            <div class="card" style="background-color:transparent;border:none;">
                 <div class="card-content text-center">
-                    <img src="{{ asset('images/avatars/'.$user->avatar) }}" style="max-height: 250px; margin-top: 10px; border-radius:50%;" class="img-fluid">
-                    <hr style="width:80%;">
-                    <p style="font-size: 16px;"><i><strong>@ {{ $user->name }}</i></strong></p>
-                </div>
-                <div class="card-footer text-center">
-                    <button href="#" class="btn btn-simple"><i class="fab fa-facebook-square" style="color: #3b5998; font-size: 25px;"></i></button>
-                    <button href="#" class="btn btn-simple"><i class="fab fa-instagram" style="color: #bc2a8d; font-size: 25px;"></i></button>
-                    <button href="#" class="btn btn-simple"><i class="fab fa-twitter-square" style="color: #00aced; font-size: 25px;"></i></button>                    
-                    <button href="#" class="btn btn-simple"><i class="fab fa-pinterest-square" style="color: #cb2027; font-size: 25px;"></i></button>
+                    <p style="font-size: 20px;color:#fff;"><i><strong>@ {{ $user->name }}</i></strong></p>
+                    <img src="{{ asset('images/avatars/'.$user->avatar) }}" style="min-height: 200px;max-height:300px;border-radius:10px;" class="img-fluid">
                 </div>
             </div>                               
         </div>
-        <div class="col-sm-8 col-md-8 col-lg-8 col-xs-8">
-            <div class="card">
-                <div class="card-header">
-                    <strong>User Profile</strong>
-                    <a href="/users/{{ $user->id }}/edit" class="float-right">Edit</a>
-                </div>
+        <div class="col-md-1 col-sm-1 col-xs-1 xol-lg-1"></div>
+        <div class="col-sm-7 col-md-7 col-lg-7 col-xs-7" style="margin-top:25px;">
+            <div class="card" style="background-color:transparent;border:none;">                                
                 <div class="card-content">
                     <div class="table-responsive">
-                        <table class="table">                          
+                        <table class="profile-table table table-hover" style="color:#fff;font-weight:bolder;">                          
                             <tbody>                               
                                 <tr>
                                     <th>First Name: </th>
@@ -84,8 +75,11 @@
                                     <td>{{ $user->proof->status }}</td>
                                 </tr>
                           </tbody>
-                        </table>
-                      </div>
+                        </table>                                           
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                            <a href="/users/{{ $user->id }}/edit" class="btn btn-outline-light float-left" style="width:100px;border:2px solid #fff;font-weight:bold;">Edit</a>
+                        </div>                        
+                    </div>                      
                 </div>
             </div>
         </div>                

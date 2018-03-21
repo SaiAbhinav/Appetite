@@ -40,6 +40,10 @@ Route::middleware(['auth'])->group(function() {
 
     Route::post('/clear-card-history', 'WalletsController@clearcardhistory');
     Route::delete('/clear-card-history', 'WalletsController@clearcardhistory');
+    
+    Route::post('/menu/breakfast', 'MenusController@breakfast');
+    Route::post('/menu/lunch', 'MenusController@lunch');
+    Route::post('/menu/dinner', 'MenusController@dinner');
 
     Route::resource('users', 'UsersController'); 
     Route::resource('wallets', 'WalletsController'); 

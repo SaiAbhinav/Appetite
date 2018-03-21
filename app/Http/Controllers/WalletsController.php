@@ -165,7 +165,7 @@ class WalletsController extends Controller
     }
 
     public function updatefromaccount(Request $request) {
-        $amount = $request->input('acc_amount');
+        $amount = $request->input('acc_to_wallet_amount1');
         $value = (double)$amount;
 
         $wallet = Wallet::where('id', $request->input('accwallet_id'))->first();
@@ -179,7 +179,8 @@ class WalletsController extends Controller
         if($walletAmountUpdate) {
             $addRecord = Accountwallet::create([
                 'wallet_id' => $request->input('accwallet_id'),
-                'account_no' => $request->input('acc_no'),
+                'bank_name' => $request->input('bank_name1'),
+                'user_acc_name' => $request->input('internet_acc_name'),
                 'amount_added' => $amount
             ]);
         }
@@ -188,7 +189,7 @@ class WalletsController extends Controller
             return redirect()->route('wallets.show', ['wallet' => $wallet->id]); 
         }else {
             return back()->withInput();
-        }
+        }      
     }
 
     public function clearacchistory(Request $request) {

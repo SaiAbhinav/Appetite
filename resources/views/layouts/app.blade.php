@@ -11,7 +11,7 @@
     <title>Appetite</title>
 
     <!-- Jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
     <link href="{{ asset('css/reset.css') }}" rel="stylesheet">
     <link href="{{ asset('css/editprofile.css') }}" rel="stylesheet">
     <link href="{{ asset('css/updatewallet.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/savecard.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/savecard.css') }}" rel="stylesheet">    
 
     <style>
         html {
@@ -59,12 +59,135 @@
             min-width: 100px;
         }
 
-        .navbar {
-            border-bottom: 1px solid #fff !important;
+        .navbar {            
             background-color: transparent;
             z-index:10;            
         }
     </style>
+    <style>
+        .container1 {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+            
+        /* Hide the browser's default checkbox */
+        .container1 input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+            
+        /* Create a custom checkbox */
+        .checkmark {   
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: lightblue;
+        }
+            
+        /* On mouse-over, add a grey background color */
+        .container1:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+            
+        /* When the checkbox is checked, add a blue background */
+        .container1 input:checked ~ .checkmark {
+            background-color: green;
+        }
+            
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+            
+        /* Show the checkmark when checked */
+        .container1 input:checked ~ .checkmark:after {
+            display: block;
+        }
+            
+        /* Style the checkmark/indicator */
+        .container1 .checkmark:after {
+            left: 9px;
+            top: 6px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        .profile-table tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: #fff;
+            opacity: 0.3;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;            
+        }
+        .profile-table tbody tr th,.table-hover tbody tr td {
+            font-size: 16px;
+            border: none;            
+        }
+        .updateprofile-form input[type="text"]:focus {
+            background-color: transparent !important;
+            color: #fff;
+        }
+        .updateprofilepic-form input[type="text"] {
+            border-radius: 5px;            
+            background-color: transparent !important;
+            color: #fff;
+        }
+        @media only screen and (max-width: 600px) {
+            .profile-table {
+                margin-left: 30px;
+            }            
+        }
+    </style>
+    <style>
+            .filterDiv2 {
+              float: left;                                
+              display: none;
+            }
+            
+            .show2 {
+              display: block;
+            }
+            
+            .container2 {
+              margin-top: 20px;
+              overflow: hidden;
+            }
+            
+            /* Style the buttons */
+            .btn2 {
+              border: none;
+              outline: none;
+              padding: 12px 16px;
+              background-color: #f1f1f1;
+              cursor: pointer;
+            }
+            
+            .btn2:hover {
+              background-color: #ddd;
+            }
+            
+            .btn2.active2 {
+              background-color: #666;
+              color: white;
+            }
+            </style>
 </head>
 <body @yield('body-changes')>
     <div id="app">     
@@ -80,7 +203,7 @@
                         @guest
                             <li></li>
                         @else
-                            <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                            <li><a class="nav-link" href="{{ route('home') }}">Menu</a></li>
                         @endguest
                         &nbsp;
                     </ul>
@@ -91,7 +214,8 @@
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                        @else
+                        @else                            
+                            <li><a href="#" class="nav-link"><i class="fas fa-utensils"></i> <span class="badge" style="background-color: #000;color: #fff;border-radius:50%;">5</span></a></li>
                             @if(Auth::user()->role_id == 1)
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -126,9 +250,9 @@
                     </ul>
                 </div>
             </div>            
-        </nav>            
+        </nav>           
         
-        <div class="row text-center">
+       <div class="row text-center">
             <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissable fade show">
@@ -137,13 +261,13 @@
                     </div>
                 @endif
                 @if (session('success'))
-                    <div class="alert alert-success alert-dismissable fade show">
+                    <div class="alert alert-success alert-dismissable fade show" style="opacity: 0.8;border: 2px solid darkgreen;">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {{ session('success') }}
+                        <strong>{{ session('success') }}</strong>
                     </div>
                 @endif
             </div>                
-        </div> 
+        </div>        
         
         <main class="py-4">
             @yield('content')
@@ -160,7 +284,7 @@
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label>Feedback Type</label>
-                                <input type="text" name="feedback_type" class="form-control" style="min-width: 250px;">
+                                <input type="text" name="feedback_type" class="form-control" style="min-width: 250px;background-color:#fff;">
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">

@@ -1,36 +1,32 @@
 @extends('layouts.app')
 
+@section('body-changes') 
+    style=" background-image: url('/images/wallet-bg.jpg'); background-size: cover;"
+@endsection
+
 @section('content')
 <div class="container">
-    <div class="card">
-        <div class="card-header">
-            <strong>User Wallet</strong>                   
-        </div>
+    <div class="card" style="background-color:transparent;border:none;border-top:none;">
         <div class="card-content">
-            <div class="table-responsive">
-                <table class="table">                          
-                    <tbody>                               
-                        <tr>
-                            <th>Wallet Balance: </th>
-                            <td>{{ number_format((float)$wallet->wallet_balance, 2, '.', '') }}</td>                                            
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div class="row text-center" style="color:#000;">
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <h4 style="font-weight:bold;">Wallet Balance:</h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <h4 style="font-weight:bold;">{{ number_format((float)$wallet->wallet_balance, 2, '.', '') }}</h4>
+                </div>
+            </div>            
         </div>
     </div>
     <div>&nbsp;</div>
-    <div class="card">
-        <div class="card-header">
-            <strong>Add Amount to Wallet</strong>
-        </div>
+    <div class="card" style="background-color:transparent;border:none;">
         <div class="card-content">
             <div class="tab">
                 <button class="tablinks text-center" onclick="openTab(event, 'card')" id="defaultOpen"><i class="far fa-credit-card"></i></button>
-                <button class="tablinks text-center" onclick="openTab(event, 'account')" style="border-bottom: 1px solid lightgrey;"><i class="fas fa-university"></i></button>
+                <button class="tablinks text-center" onclick="openTab(event, 'account')"><i class="fas fa-university"></i></button>
                 <button class="tablinks text-center" onclick="openTab(event, 'history')"><i class="fas fa-history"></i></button>
             </div>        
-            <div id="card" class="tabcontent">
+            <div id="card" class="tabcontent" style="border:none;">
                 <!-- Nav pills -->
                 <ul class="nav nav-pills" role="tablist">
                     <li class="nav-item">
@@ -48,24 +44,19 @@
                                 <div class="table-responsive table-hover">
                                     <table class="table"> 
                                         <thead class="thead-dark">
-                                            <tr>
-                                                {{-- <th>Card Holder Name</th> --}}
+                                            <tr>                                                
                                                 <th>Card Number</th>
                                                 <th>Remove</th>
                                             </tr>
                                         </thead>                         
                                         <tbody>   
                                             @foreach($cards as $card)                            
-                                            <tr>                                        
-                                                {{-- <td>{{ $card->card_name }}</td> --}}
+                                            <tr style="background-color:#fff;opacity:0.8;">                                                                                        
                                                 <td>
                                                     <?php
                                                         $cardtemp = $card->card_no;        
-                                                        $carddisp = "";
-                                                        for($i = 1; $i < strlen($cardtemp)-4; $i++) {
-                                                            $carddisp = $carddisp."x";
-                                                        }
-                                            
+                                                        $carddisp = substr($cardtemp, 0, 2);
+                                                        $carddisp = $carddisp."".substr_replace(substr($cardtemp, 2, 14), "xx-xxxx-xxxx-", 0);                                                        
                                                         $carddisp = $carddisp."".substr($cardtemp, -4);
                                                     ?>                                                                                                       
                                                     <button class="btn btn-link"                                                    
@@ -82,7 +73,7 @@
                                                     <form id="delete-form" action="/cards/{{ $card->id }}" method="post">
                                                         @csrf
                                                         <input type="hidden" name="_method" value="delete">             
-                                                        <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-times"></i></button>                      
+                                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>                      
                                                     </form>                                                                                                                       
                                                 </td>
                                             </tr>                    
@@ -93,8 +84,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="newcard" class="container tab-pane fade"><br>
-                        <form method="POST" action="/wallets/{{ $wallet->id }}">
+                    <div id="newcard" class="container tab-pane fade" style="background-color:#fff;opacity:0.8;border-radius:10px;"><br>
+                        <form class="wallet-form" method="POST" action="/wallets/{{ $wallet->id }}">
                             @csrf
                             <input type="hidden" name="_method" value="put">
                             <div class="container">
@@ -102,7 +93,7 @@
                                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
                                         <div class="form-group">
                                             <label>Card Number</label>
-                                            <input type="text" name="card_no" class="form-control">
+                                            <input id="card_no" type="text" name="card_no" class="form-control" maxlength="19">
                                         </div>                                                                                
                                     </div>
                                 </div>
@@ -169,61 +160,99 @@
                     </div>                    
                 </div>
             </div>        
-            <div id="account" class="tabcontent">
-                <div class="row">
+            <div id="account" class="tabcontent" style="background-color:#fff;opacity:0.8;border-radius:10px;margin-top:10px;color:#000;font-weight:bold;padding-bottom:20px;">
+                <div class="row text-center">
                     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-                        <h3 style="margin-left: 1%;">Account Details</h3>    
+                        <h4>Internet Banking</h4>    
                     </div>    
-                </div>                            
-                <form method="POST" action="/account-to-wallet">
-                    @csrf
-                    <input type="hidden" name="_method" value="put">
-                    <input type="hidden" name="accwallet_id" value="{{ $wallet->id }}">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                <div class="form-group">
-                                    <label>Account Number</label>
-                                    <input type="text" name="acc_no" class="form-control">
-                                </div>                                                                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                <div class="form-group">
-                                    <label>Account Name</label>
-                                    <input type="text" name="acc_name" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                <div class="form-group">
-                                    <label>Account Password</label>
-                                    <input type="password" name="acc_pass" class="form-control" style="
-                                        width: 100%;
-                                        height: 35px;
-                                        border: 1px solid #000;                                                
-                                    ">
-                                </div>
-                            </div>
-                        </div>                                
-                        <div class="row">
-                            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                                <div class="form-group">
-                                    <label>Amount</label>
-                                    <input type="text" name="acc_amount" class="form-control">
-                                </div>                                         
-                            </div>
-                            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                                <div class="form-group">
-                                    <input type="submit" class="btn btn-primary form-control" value="Add" style="margin-top: 7%;">
-                                </div>
-                            </div>
+                </div>                
+                <div class="container">                                        
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                            <div class="form-group" style="color:#000;font-weight:bold;">
+                                <label>Enter the Amount</label>
+                                <input type="text" id="acc_amount" class="form-control" style="border:1px solid #000;color:#000;font-weight:bold;">
+                            </div>                                
                         </div>
                     </div>
-                </form> 
-                <div>&nbsp;</div>                    
+                    <hr>
+                    <div class="row text-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                            <h4>Choose a Bank to Proceed</h4>    
+                        </div>    
+                    </div>
+                    <div>&nbsp;</div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">State Bank of India
+                                <input type="radio" name="radio" value="State Bank of India" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">Andhra Bank
+                                <input type="radio" name="radio" value="Andhra Bank" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">ICICI Bank
+                                <input type="radio" name="radio" value="ICICI Bank" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">                            
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">Indian Overseas Bank
+                                <input type="radio" name="radio" value="Indian Overseas Bank" onchange="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">HDFC Bank
+                                <input type="radio" name="radio" value="HDFC Bank" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">Punjab National Bank
+                                <input type="radio" name="radio" value="Punjab National Bank" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">Axis Bank
+                                <input type="radio" name="radio" value="Axis Bank" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">City Union Bank
+                                <input type="radio" name="radio" value="City Union Bank" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                            <label class="container1">Dhanlakshmi Bank
+                                <input type="radio" name="radio" value="Dhanlakshmi Bank" onclick="check(this.value)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div> 
+                    <div class="text-center" style="margin-top: 2%;">                        
+                        <button
+                            id="bankproceed"
+                            class="btn btn-primary"
+                            data-toggle="modal"
+                            data-target="#AcctoWalletModel"
+                            data-bank="null"
+                            data-amount="null"
+                        >Proceed</button>
+                    </div>                   
+                </div>                 
             </div>            
             <div id="history" class="tabcontent">
                 <!-- Nav pills -->
@@ -254,7 +283,7 @@
                                 </thead>                                                                        
                                 <tbody>   
                                     @foreach($cardwallets as $cardwallet) 
-                                        <tr>
+                                        <tr style="background-color:#fff;opacity:0.8;">
                                             <td>
                                                 <?php
                                                     $cardtemp = $cardwallet->card_no;        
@@ -280,7 +309,8 @@
                             <table class="table"> 
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Account Number</th>
+                                        <th>Bank</th>
+                                        <th>User Name</th>
                                         <th>Amount</th>
                                         <th>
                                             Time
@@ -292,19 +322,9 @@
                                 </thead>                                                                        
                                 <tbody>   
                                     @foreach($accountwallets as $accountwallet) 
-                                        <tr>
-                                            <td>
-                                                <?php
-                                                    $acctemp = $accountwallet->account_no;        
-                                                    $accdisp = "";
-                                                    for($i = 1; $i < strlen($acctemp)-4; $i++) {
-                                                        $accdisp = $accdisp."x";
-                                                    }
-                                            
-                                                    $accdisp = $accdisp."".substr($acctemp, -4);
-                                                ?>
-                                                {{ $accdisp }}
-                                            </td>
+                                        <tr style="background-color:#fff;opacity:0.8;">
+                                            <td>{{ $accountwallet->bank_name }}</td>
+                                            <td>{{ $accountwallet->user_acc_name }}</td>
                                             <td>{{ number_format((float)$accountwallet->amount_added, 2, '.', '') }}</td>
                                             <td>{{ $accountwallet->created_at }}</td>                                            
                                         </tr>
@@ -336,67 +356,143 @@
 </div>
 
 <div class="content-wrapper">
-        <section class="content container-fluid">
-            <div class="modal fade" id="AddtoWalletModel" tabindex="-1" role="dialog" aria-labelledby="AddtoWalletLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">                            
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <th style="border:none;">Card Number</th>
-                                        <td id="savedcard_dispno" style="border:none;"></td>
-                                    </tr>                                                                            
-                                </tbody>
-                            </table>
-                            <div class="container">                                
-                                <h5><b>Enter the following to add to wallet using this card</b></h5>
-                                <hr>
-                                <form method="POST" action="/savedcard">
-                                    @csrf
-                                    <input type="hidden" name="_method" value="put">  
-                                    <input type="hidden" id="savedcard_no" name="savedcard_no" value="">
-                                    <input type="hidden" name="wallet_id" value="{{ $wallet->id }}">                                  
-                                    <div class="row">                                    
-                                        <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-                                            <div class="form-group">
-                                                <label>CVV</label>
-                                                <input type="password" name="savedcard_pin" class="form-control" style="
-                                                    width: 100%;
-                                                    height: 35px;
-                                                    border: 1px solid #000;
-                                                    color: #000;                                                
-                                                ">
-                                            </div>
-                                        </div>    
-                                        <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                                            <div class="form-group">
-                                                <label>Amount</label>
-                                                <input type="text" name="savedcard_amount" class="form-control">
-                                            </div>                                         
-                                        </div>                                      
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-                                            <div class="form-group">
-                                                <input type="submit" class="btn btn-primary form-control" value="Add">
-                                            </div>
+    <section class="content container-fluid">
+        <div class="modal fade" id="AddtoWalletModel" tabindex="-1" role="dialog" aria-labelledby="AddtoWalletLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">                            
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th style="border:none;">Card Number</th>
+                                    <td id="savedcard_dispno" style="border:none;"></td>
+                                </tr>                                                                            
+                            </tbody>
+                        </table>
+                        <div class="container">                                
+                            <h5><b>Enter the following to add to wallet using this card</b></h5>
+                            <hr>
+                            <form method="POST" action="/savedcard">
+                                @csrf
+                                <input type="hidden" name="_method" value="put">  
+                                <input type="hidden" id="savedcard_no" name="savedcard_no" value="">
+                                <input type="hidden" name="wallet_id" value="{{ $wallet->id }}">                                  
+                                <div class="row">                                    
+                                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>CVV</label>
+                                            <input type="password" name="savedcard_pin" class="form-control" style="
+                                                width: 100%;
+                                                height: 35px;
+                                                border: 1px solid #000;
+                                                color: #000;                                                
+                                            ">
+                                        </div>
+                                    </div>    
+                                    <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Amount</label>
+                                            <input type="text" name="savedcard_amount" class="form-control">
+                                        </div>                                         
+                                    </div>                                      
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-primary form-control" value="Add">
                                         </div>
                                     </div>
-                                </form>                                
-                            </div>                           
-                        </div>
+                                </div>
+                            </form>                                
+                        </div>                           
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
+<div class="content-wrapper">
+    <section class="content container-fluid">
+        <div class="modal fade" id="AcctoWalletModel" tabindex="-1" role="dialog" aria-labelledby="AcctoWalletModelLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">                            
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th style="border:none;">Bank :</th>
+                                    <td id="bank_name" style="border:none;"></td>
+                                </tr>
+                                <tr>
+                                    <th style="border:none;">Amount :</th>
+                                    <td id="acc_to_wallet_amount"style="border:none;"></td>
+                                </tr>                                                                            
+                            </tbody>
+                        </table>
+                        <div class="container">
+                            <h5><b>Please Enter the Credentials to Proceed</b></h5>
+                            <hr>
+                            <form method="POST" action="/account-to-wallet">
+                                @csrf
+                                <input type="hidden" name="_method" value="put">  
+                                <input type="hidden" id="bank_name1" name="bank_name1" readonly>
+                                <input type="hidden" name="accwallet_id" value="{{ $wallet->id }}" readonly> 
+                                <input type="hidden" id="acc_to_wallet_amount1" name="acc_to_wallet_amount1" readonly>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>User Name</label>
+                                            <input type="text" name="internet_acc_name" class="form-control" style="border:1px solid #000;color:#000;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password" name="internet_acc_pass" class="form-control" style="
+                                            width: 100%;
+                                            height: 35px;
+                                            border: 1px solid #000;
+                                            color: #000;                                                
+                                        ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-primary" value="Proceed to Add">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>                                                                                                                                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function check(browser) {
+        var x = document.getElementById("acc_amount").value;
+        document.getElementById("bankproceed").dataset.bank=browser;
+        document.getElementById("bankproceed").dataset.amount=x;                
+    }
+</script>
 <script>
     function openTab(evt, tabType) {
         var i, tabcontent, tablinks;
@@ -432,5 +528,28 @@
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
         });
+</script>
+<script>
+    $(document).ready(function(){
+        $('#AcctoWalletModel').on('shown.bs.modal', function (event) {
+        
+        var button = $(event.relatedTarget)                                
+        var bank = button.data('bank')                
+        var amount = button.data('amount')
+
+        var modal = $(this)  
+            modal.find('#bank_name').text(bank)
+            modal.find('#bank_name1').val(bank)   
+            modal.find('#acc_to_wallet_amount').text(amount)                                                                                 
+            modal.find('#acc_to_wallet_amount1').val(amount)                                                                                 
+        })
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        document.getElementById('card_no').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/[^\d0-9]/g, '').replace(/(.{4})/g, '$1 ').trim();
+        });
+    });
 </script>
 @endsection
