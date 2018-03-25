@@ -37,9 +37,16 @@
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5 col-lg-5 text-center">
-                            <i class="far fa-heart" style="font-size:25px;color:red;margin-top:10px;" title="Like to Add to Preferences"></i>                            
-                            <i class="fas fa-info-circle" data-target="#{{ strtok($item->item_name, ".") }}Model" data-toggle="modal" style="font-size:25px;color:#5bc0de;margin-top:10px;" title="View Details"></i>                            
-                            <i class="fas fa-utensils" style="font-size:25px;color:#5cb85c;margin-top:10px;" title="Add to Order"></i>
+                            <form action="" class="form" data-cesta-feira-form>
+                                @csrf
+                                <input type="number" style="width:50px;border:none;background-color:lightgrey;padding-left:5px;font-weight:bold;" value="1" name="quantity" data-cesta-feira-attribute>                                    
+                                <input type="hidden" value="{{ asset('images/dishes/dinner/'.$item->item_name) }}" name="item_img" data-cesta-feira-attribute>                                    
+                                <input type="hidden" value="{{ strtok($item->item_name, ".") }}" name="product_name" data-cesta-feira-attribute>
+                                <input type="hidden" value="{{ number_format((float)$item->rate, 2, '.', '') }}" name="unity_price" data-cesta-feira-attribute>                                    
+                                <input type="hidden" name="item_id" value="{{ $item->id }}" data-cesta-feira-attribute />
+                                <input type="hidden" value="{{ $item->id }}" data-cesta-feira-item-id />                                    
+                                <button type="submit" class="btn" style="background-color:#fff;"><i class="fas fa-utensils" style="font-size:20px;color:#5cb85c;margin-top:10px;" title="Add to Order"></i></button>
+                            </form>             
                         </div>
                     </div> 
                     <div tabindex="-1" class="modal fade" id="{{ strtok($item->item_name, ".") }}Model" role="dialog" aria-hidden="true" aria-labelledby="{{ strtok($item->item_name, ".") }}ModelLabel">

@@ -36,7 +36,7 @@ class FeedbacksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //        
         $feedback = Feedback::create([
             'user_id' => Auth::user()->id,
             'feedback_type' => $request->input('feedback_type'),
@@ -45,7 +45,9 @@ class FeedbacksController extends Controller
         ]);
 
         if($feedback) {
-            return back();
+            return back()->with('success', 'Your feedback has been successfully recorded !');
+        }else {
+            return back()->with('error', 'Error ! Please try again !');
         }        
     }
 

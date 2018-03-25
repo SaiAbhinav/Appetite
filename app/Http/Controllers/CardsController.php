@@ -86,7 +86,9 @@ class CardsController extends Controller
         $findCard->delete();
 
         if($findCard) {
-            return back();
+            return back()->with('success', 'Your card has been successfully removed !');
+        }else {
+            return back()->with('error', 'Error ! Please try again !');
         }        
     }
 }

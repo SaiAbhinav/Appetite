@@ -14,7 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">    
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -188,6 +188,28 @@
               color: white;
             }
             </style>
+            <style>
+                    .cart-item-count {
+                        position: relative;
+                    }
+            
+                    .cesta-feira__num-items{
+                        position: absolute;
+                        width: 25px;
+                        height: 25px;
+                        border-radius: 50%;
+                        background: #000;
+                        color: #fff;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        top: -2px;
+                        right: -12px;
+                        font-size: 12px;
+                        font-weight: bold;
+                        opacity: 1;
+                    }
+            </style>
 </head>
 <body @yield('body-changes')>
     <div id="app">     
@@ -215,7 +237,7 @@
                             <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                         @else                            
-                            <li><a href="#" class="nav-link"><i class="fas fa-utensils"></i> <span class="badge" style="background-color: #000;color: #fff;border-radius:50%;">5</span></a></li>
+                            <li><a class="nav-link cart-item-count" href="/cart" data-cesta-feira-items-count><span class="fas fa-utensils"></span> Orders</a></li>
                             @if(Auth::user()->role_id == 1)
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -284,7 +306,7 @@
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label>Feedback Type</label>
-                                <input type="text" name="feedback_type" class="form-control" style="min-width: 250px;background-color:#fff;">
+                                <input type="text" name="feedback_type" class="form-control" style="min-width: 250px;background-color:#fff;color:#000;">
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -390,5 +412,8 @@
             $('[data-toggle="tooltip"]').tooltip();   
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jStorage/0.4.12/jstorage.min.js"></script>
+    <script src="{{ asset('js/cesta-feira.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
 </body>
 </html>

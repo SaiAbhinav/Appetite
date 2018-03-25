@@ -1,0 +1,21 @@
+to check the passwords of all wifi connected on the system:
+
+cmd>> netsh wlan show profile
+cmd>> netsh wlan show profile “NETWORK NAME” key=clear
+
+to get cmd when shift+right click:
+
+1. regedit
+2. HKEY_CLASSES_ROOT\Directory\shell\cmd
+3. right click on cmd, select permissions
+4. click advanced option
+5. click change link next to owner
+6. enter your system account name correctly and press check name
+7. click ok
+8. enable the replace owner on subcontainers and objects checkbox
+9. click apply and ok
+10. On permissions tab select adminstrators
+11. enable the full control checkbox
+12. click apply and ok
+13. rename 'HideBasedOnVelocityId' to 'ShowBasedOnVelocityId' and press enter
+14. select a folder and do shift+right_click to see cmd

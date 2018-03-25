@@ -56,9 +56,12 @@ class UsersController extends Controller
     public function show(User $user)
     {
         //
-        $user = User::find($user->id);
-
-        return view('users.show', ['user' => $user]);
+        if($user->id == Auth::user()->id) {
+            $user = User::find($user->id);
+            return view('users.show', ['user' => $user]);
+        }else {
+            return view('error');
+        }
     }
 
     /**
@@ -70,9 +73,13 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         //        
-        $user = User::find($user->id);
-
-        return view('users.edit', ['user' => $user]);        
+        if($user->id == Auth::user()->id) {
+            $user = User::find($user->id);
+            return view('users.edit', ['user' => $user]); 
+        }else {
+            return view('error');
+        }       
+              
     }
 
     /**
@@ -85,6 +92,7 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         //        
+        if($user->id == Auth::user()->id) {
             $userUpdate = User::where('id', $user->id)
                 ->update([
                     'first_name' => $request->input('first_name'),
@@ -101,8 +109,12 @@ class UsersController extends Controller
             
             if($userUpdate) {        
                 return redirect()->route('users.show', ['user' => $user->id])->with('success', 'Profile Successfully Updated!');
-            }    
-            return back()->withInput()->with('error', 'Error ! Please try again !');
+            }else {
+                return back()->withInput()->with('error', 'Error ! Please try again !');
+            }                
+        }else {
+            return view('error');
+        } 
     }
 
     /**
@@ -122,65 +134,84 @@ class UsersController extends Controller
 
         if($findUser) {
             return back()->with('success', 'User is successfully deleted !');
+        }else {
+            return back()->with('error', 'Error ! Please try again !');
         }        
-        return back()->with('error', 'Error ! Please try again !');
     }
 
     public function updateprofile(Request $request) {
     
         //
-        $user = $request->input('user_id');
+        if($request->input('user_id') == Auth::user()->id) {
+            $user = $request->input('user_id');
 
-        $this->validate($request, [
-            'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+            $this->validate($request, [
+                'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            ]);
 
-        $avatar = $request->file('avatar');
+            $avatar = $request->file('avatar');
 
-        $destinationPath = public_path('/images/avatars');
-        $avatar->move($destinationPath, $avatar->getClientOriginalName());
+            $destinationPath = public_path('/images/avatars');
+            $avatar->move($destinationPath, $avatar->getClientOriginalName());
 
-        $updateavatar = User::where('id', $user)->update([
-            'avatar' => $avatar->getClientOriginalName()
-        ]);
+            $updateavatar = User::where('id', $user)->update([
+                'avatar' => $avatar->getClientOriginalName()
+            ]);
 
-        if($updateavatar) {
-            return redirect()->route('users.show', ['user' => $user])->with('success', 'Profile Image Successfully Updated!');
-        }        
-
-        return back()->withInput()->with('error', 'Error ! Please try again !');        
+            if($updateavatar) {
+                return redirect()->route('users.show', ['user' => $user])->with('success', 'Profile Image Successfully Updated!');
+            }else {
+                return back()->withInput()->with('error', 'Error ! Please try again !');
+            }               
+        }else {
+            return view('error');
+        }
     }
 
     public function uploadproof(Request $request) {
 
         //
-        $user = $request->input('user_id');
+        if($request->input('user_id') == Auth::user()->id) {
+            $user = $request->input('user_id');
 
-        $proof = $request->file('proof');
-        
-        $proofname = $proof->getClientOriginalName();
-        $proofext = $proof->getClientOriginalExtension();                 
+            $proof = $request->file('proof');
+            
+            $proofname = $proof->getClientOriginalName();
+            $proofext = $proof->getClientOriginalExtension();                 
 
-        $destinationProofPath = public_path('/proofs');
-        $proof->move($destinationProofPath, $proof->getClientOriginalName());
+            $destinationProofPath = public_path('/proofs');
+            $proof->move($destinationProofPath, $proof->getClientOriginalName());
 
-        $uploadproof = Proof::where('user_id' , '=', $user)->first();
+            $uploadproof = Proof::where('user_id' , '=', $user)->first();
 
-        $uploadproof = Proof::updateOrCreate(
-            ['user_id' => $user],
-            ['proof_type' => $proofname]
-        );
+            $status = "Pending...";
 
-        $uploadproof->save();
+            if($uploadproof) {
+                $result = Proof::where('user_id', $user)->update([
+                    'user_id' => $user,
+                    'proof_type' => $proofname,
+                    'status' => $status,
+                ]);
+            }else {
+                $result = Proof::create([
+                    'user_id' => $user,
+                    'proof_type' => $proofname,
+                    'status' => $status,
+                ]);
+            }
 
-        if($uploadproof) {
-            return redirect()->route('users.show', ['user' => $user])->with('success', 'Document Successfully Uploaded!');;
+            if($result) {
+                return redirect()->route('users.show', ['user' => $user])->with('success', 'Document Successfully Uploaded!');
+            }else {
+                return back()->withInput()->with('error', 'Error ! Please try again !');
+            }        
+        }else {
+            return view('error');
         }
-
-        return back()->withInput()->with('error', 'Error ! Please try again !');
     }
 
     public function approve(Request $request) {
+        
         $user = $request->input('user_id');
 
         $proofstatus = "Approved";
@@ -191,12 +222,13 @@ class UsersController extends Controller
 
         if($approval) {            
             return back()->with('success', 'KYC is approved successfully !');
-        }
-
-        return back()->withInput()->with('error', 'Error ! Please try again !');
+        }else {
+            return back()->withInput()->with('error', 'Error ! Please try again !');
+        }        
     }
 
     public function upgraderole(Request $request) {
+
         $user = $request->input('user_id');
 
         $upgradeRole = "manager";
@@ -210,9 +242,9 @@ class UsersController extends Controller
 
         if($upgrade) {
             return back()->with('success', 'User\'s role updated successfully !');
-        }
-
-        return back()->withInput()->with('error', 'Error ! Please try again !');
+        }else {
+            return back()->withInput()->with('error', 'Error ! Please try again !');
+        }        
     }
 
     public function changepassword(Request $request){

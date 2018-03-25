@@ -94,10 +94,12 @@ class WalletsController extends Controller
             'wallet_balance' => $newamount
         ]);
 
+        $cardno = str_replace(' ', '', $request->input('card_no'));
+
         if($walletAmountUpdate) {
             $addRecord = Cardwallet::create([
                 'wallet_id' => $wallet->id,
-                'card_no' => $request->input('card_no'),
+                'card_no' => $cardno,
                 'amount_added' => $amount
             ]);
         }
@@ -106,18 +108,24 @@ class WalletsController extends Controller
             $saveCard = Card::updateOrCreate([
                 'user_id' => Auth::user()->id,
                 'card_name' => $request->input('card_name'),
-                'card_no' => $request->input('card_no'),
+                'card_no' => $cardno,
                 'valid_thru_month' => $request->input('valid_thru_month'),
                 'valid_thru_year' => $request->input('valid_thru_year'),
                 'card_pin' => $request->input('card_pin')
             ]); 
+
+            if($saveCard && $walletAmountUpdate) {
+                return redirect()->route('wallets.show', ['wallet' => $wallet->id])->with('success', 'Amount has successfully added to the wallet and Card has been saved !');
+            }else {
+                return back()->withInput()->with('error','Error ! Please try again !');
+            }
         }       
 
-        if($walletAmountUpdate) {
-            return redirect()->route('wallets.show', ['wallet' => $wallet->id]);
-        }
-
-        return back()->withInput();
+        if($walletAmountUpdate) {        
+            return redirect()->route('wallets.show', ['wallet' => $wallet->id])->with('success', 'Amount has successfully added to the wallet !');           
+        }else {
+            return back()->withInput()->with('error','Error ! Please try again !');
+        }        
     }
 
     /**
@@ -131,7 +139,8 @@ class WalletsController extends Controller
         //
     }
 
-    public function updatefromsavedcard(Request $request) {        
+    public function updatefromsavedcard(Request $request) {         
+
         $amount = $request->input('savedcard_amount');
         $value = (double)$amount;
 
@@ -156,15 +165,16 @@ class WalletsController extends Controller
             }
     
             if($addRecord) {
-                return redirect()->route('wallets.show', ['wallet' => $wallet->id]); 
+                return redirect()->route('wallets.show', ['wallet' => $wallet->id])->with('success', 'Amount has successfully added to the wallet !'); 
             }
 
         }else {
-            return back()->withInput();
+            return back()->withInput()->with('error', 'Error ! Check the CVV and try again !');
         }
     }
 
     public function updatefromaccount(Request $request) {
+
         $amount = $request->input('acc_to_wallet_amount1');
         $value = (double)$amount;
 
@@ -186,9 +196,9 @@ class WalletsController extends Controller
         }
     
         if($addRecord) {
-            return redirect()->route('wallets.show', ['wallet' => $wallet->id]); 
+            return redirect()->route('wallets.show', ['wallet' => $wallet->id])->with('success', 'Amount has successfully added to the wallet !'); 
         }else {
-            return back()->withInput();
+            return back()->withInput()->with('error', 'Error ! Please try again !');
         }      
     }
 
@@ -196,7 +206,9 @@ class WalletsController extends Controller
         $findRecord = Accountwallet::where('wallet_id', $request->input('clear_acc_wallet_id'))->delete();
 
         if($findRecord) {
-            return back();
+            return back()->with('success', 'Account to Wallet transaction history has been successfully deleted');
+        }else {
+            return back()->with('error', 'Error ! Please try again !');
         }
     }
 
@@ -204,7 +216,9 @@ class WalletsController extends Controller
         $findRecord = Cardwallet::where('wallet_id', $request->input('clear_card_wallet_id'))->delete();
 
         if($findRecord) {
-            return back();
+            return back()->with('success', 'Card to Wallet transaction history has been successfully deleted');
+        }else {
+            return back()->with('error', 'Error ! Please try again !');
         }
     }
 }

@@ -25,4 +25,8 @@ class MenusController extends Controller
         $dinners = Category::all();
         return view('menu.dinner', ['dinners' => $dinners, 'items' => $items]);
     }
+
+    public function cart() {
+        return view('menu.cart');
+    }
 }
