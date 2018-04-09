@@ -1,0 +1,29 @@
+1.)
+
+remainder application using nodejs, expressjs and mongodb (one time remainder)
+
+-> contain which date, what time, venue(optional), what to be remainded
+
+
+
+
+2.)
+
+management portal for our department
+
+-> login page --> student and faculty roles
+
+student role:
+-------------
+
+-> home page  --> view his own class students on clicking list student button (roll-no, name)
+	      --> roll no should be hyperlink on clicking show that student details on the same page (roll-no, name, email-id, mobile-no, address, batch, photo(if possible))
+	      --> list courses button should display course code and course name
+	      --> clicking on the course code should display a small paragraph on that course
+
+faculty role:
+-------------
+
+-> home page  --> list student button shows all the student
+              --> on clicking the roll no show the student details with mobile-no, email-id should be modifiable
+	      --> list courses option should show the course details same as student and also should be able to add/delete a course

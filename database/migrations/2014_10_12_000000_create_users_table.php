@@ -26,9 +26,6 @@ class CreateUsersTable extends Migration
                 $table->string('pin_code')->nullable();
                 $table->integer('role_id')->unsigned();
 
-                //$table->foreign('role_id')->references('id')->on('roles');
-                //$table->foreign('pin_code')->references('pin_code')->on('pins');
-
                 $table->rememberToken();
                 $table->timestamps();
             });

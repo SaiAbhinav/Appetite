@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Item;
+use App\ItemOrder;
+use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MenusController extends Controller
 {
@@ -24,5 +27,9 @@ class MenusController extends Controller
         $items = Item::where('type_id', 3)->get();
         $dinners = Category::all();
         return view('menu.dinner', ['dinners' => $dinners, 'items' => $items]);
+    }
+
+    public function cart() {
+        return view('menu.cart');
     }
 }

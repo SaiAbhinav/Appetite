@@ -31,7 +31,7 @@
                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
                                 <div class="form-group">  
                                     <label style="color:#fff;">Mobile Number</label>                                  
-                                    <input type="text" class="form-control" style="font-size: 20px; height:40px;" name="phone_no" placeholder="Mobile" value="{{ $user->phone_no }}">
+                                    <input type="text" class="form-control" style="font-size: 20px; height:40px;" pattern="[6-9]\d{9}" title="Mobile should start with 6/7/8/9 and should be 10 digits long only !" name="phone_no" placeholder="Mobile" value="{{ $user->phone_no }}">
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
@@ -68,7 +68,23 @@
                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
                                 <div class="form-group">
                                     <label style="color:#fff;">Gender</label>
-                                    <input type="text" class="form-control" style="font-size: 20px; height:40px;" name="gender" placeholder="Gender" value="{{ $user->gender }}">
+                                    <select class="form-control" style="font-size: 20px; height:40px;background-color:transparent;color:#fff;text-align-last:center;" name="gender">
+                                        <option 
+                                            value="Male" 
+                                            @if($user->gender == "Male")
+                                                selected = "selected"
+                                            @endif
+                                            style="color: #000;"                                            
+                                        >Male</option>
+                                        <option 
+                                            value="Female" 
+                                            @if($user->gender == "Female")
+                                                selected = "selected"
+                                            @endif
+                                            style="color:#000;"
+                                        >Female</option>
+                                    </select>
+                                    
                                 </div>
                             </div>  										
                         </div>
@@ -109,7 +125,7 @@
                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
                                 <div class="form-group">
                                     <label style="color:#fff;">Postal Code</label>
-                                    <input type="text" class="form-control" style="font-size: 20px; height:40px;" name="pin_code" placeholder="Postal Code" value="{{ $user->pin_code }}">
+                                    <input type="text" class="form-control" style="font-size: 20px; height:40px;" pattern="[0-9]{6}" title="Postal code should be only 6 digits long !" name="pin_code" placeholder="Postal Code" value="{{ $user->pin_code }}">
                                 </div>
                             </div>                                                                            
                         </div>

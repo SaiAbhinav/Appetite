@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth'])->group(function() {       
 
     Route::post('/uploadproof', 'UsersController@uploadproof');
 
@@ -39,11 +39,12 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/clear-account-history', 'WalletsController@clearacchistory');
 
     Route::post('/clear-card-history', 'WalletsController@clearcardhistory');
-    Route::delete('/clear-card-history', 'WalletsController@clearcardhistory');
-    
+    Route::delete('/clear-card-history', 'WalletsController@clearcardhistory');    
+
     Route::post('/menu/breakfast', 'MenusController@breakfast');
     Route::post('/menu/lunch', 'MenusController@lunch');
     Route::post('/menu/dinner', 'MenusController@dinner');
+    Route::get('/cart', 'MenusController@cart');
 
     Route::resource('users', 'UsersController'); 
     Route::resource('wallets', 'WalletsController'); 

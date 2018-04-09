@@ -18,13 +18,11 @@
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Profile</th>
-                    {{-- <th>Username</th> --}}
+                    <th>Profile</th>                    
                     <th>Firstname</th>
                     <th>Gender</th>
                     <th>Email</th>
-                    <th>Contact</th>
-                    {{-- <th>Address</th>  --}}            
+                    <th>Contact</th>                            
                     <th>City</th>
                     <th>State</th>
                     <th>KYC</th>
