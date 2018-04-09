@@ -25,7 +25,8 @@
     <link href="{{ asset('css/reset.css') }}" rel="stylesheet">
     <link href="{{ asset('css/editprofile.css') }}" rel="stylesheet">
     <link href="{{ asset('css/updatewallet.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/savecard.css') }}" rel="stylesheet">    
+    <link href="{{ asset('css/savecard.css') }}" rel="stylesheet"> 
+    <link href="{{ asset('css/snackbar.css') }}" rel="stylesheet"> 
 
     <style>
         html {
@@ -244,7 +245,8 @@
                                         Admin
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="/users" style="font-size: 16px;">All Users</a>
+                                        <a class="dropdown-item" href="/users" style="font-size: 16px;">Users</a>
+                                        <a class="dropdown-item" href="/feedbacks" style="font-size: 16px;">Feedbacks</a>
                                     </div>
                                 </li>
                             @endif
@@ -272,7 +274,9 @@
                     </ul>
                 </div>
             </div>            
-        </nav>           
+        </nav>       
+        
+        <div id="snackbar">Successfully Added...</div>  
         
        <div class="row text-center">
             <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
@@ -415,5 +419,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jStorage/0.4.12/jstorage.min.js"></script>
     <script src="{{ asset('js/cesta-feira.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
+    <script>
+        function showSnackBar(v, q) {                   
+            var x = document.getElementById('snackbar');
+            x.innerText = 'Successfully Added ' + v + ' of quantity ' + q;
+            x.className = 'show';
+            setTimeout(function(){ x.className = x.className.replace('show', ''); }, 3000);
+        }
+    </script>
 </body>
 </html>

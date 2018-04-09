@@ -19,7 +19,7 @@ function initListaOrcamento() {
             totalValue += $(item).data('item-total-value');
         });
 
-        $('#total-value').html("$" + parseFloat(totalValue).toFixed(2));
+        $('#total-value').html("₹" + parseFloat(totalValue).toFixed(2));
     }
 
     function mountLayout(index, data) {
@@ -31,9 +31,8 @@ function initListaOrcamento() {
                         "<div class='media-body'>" +
                         "<h5 class='mt-0'>"+ data.product_name +"</h5>" +
                         "</div></div></td><td class='col-sm-1 col-md-1' style='text-align: center'>" + data.quantity +
-                        "<td class='col-sm-1 col-md-1 text-center'><strong>$"+ data.unity_price +"</strong></td>" +
-                        "<td class='col-sm-1 col-md-1 text-center'><strong>"+ data.item_id +"</strong></td>" +
-                        "<td class='col-sm-1 col-md-1 text-center' data-item-total-value='"+totalValueTemp+"'><strong>"+parseFloat(totalValueTemp).toFixed(2)+"</strong></td>" +
+                        "<td class='col-sm-1 col-md-1 text-center'><strong>₹"+ data.unity_price +"</strong></td>" +                        
+                        "<td class='col-sm-1 col-md-1 text-center' data-item-total-value='"+totalValueTemp+"'><strong>₹"+parseFloat(totalValueTemp).toFixed(2)+"</strong></td>" +
                         "<td class='col-sm-1 col-md-1'>" +
                         "<a href='javascript:;' class='btn btn-danger' data-cesta-feira-delete-item='"+ index +"'><i class='fas fa-times'></i></a>" +
                         "</td></tr>";        

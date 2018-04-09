@@ -16,6 +16,8 @@ class FeedbacksController extends Controller
     public function index()
     {
         //
+        $feedbacks = Feedback::all();
+        return view('users.feedback', ['feedbacks' => $feedbacks]);
     }
 
     /**

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Item;
+use App\ItemOrder;
+use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MenusController extends Controller
 {

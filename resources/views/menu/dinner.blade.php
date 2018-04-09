@@ -32,14 +32,23 @@
                                 <p>
                                     {{ strtok($item->item_name, ".") }}
                                     <br>
-                                    <strong style="color:#f00;">Price: {{ number_format((float)$item->rate, 2, '.', '') }}</strong>
+                                    <strong style="color:#f00;">Price: <i class="fas fa-rupee-sign"></i> {{ number_format((float)$item->rate, 2, '.', '') }}</strong>
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5 col-lg-5 text-center">
-                            <form action="" class="form" data-cesta-feira-form>
+                            <form action="" class="form" onsubmit="showSnackBar('{{ strtok($item->item_name, ".") }}', this.quantity.value);" data-cesta-feira-form>
                                 @csrf
-                                <input type="number" style="width:50px;border:none;background-color:lightgrey;padding-left:5px;font-weight:bold;" value="1" name="quantity" data-cesta-feira-attribute>                                    
+                                <input type="number" style="
+                                    width: 50px;
+                                    text-align: center;
+                                    border: none;
+                                    font-weight: bold;
+                                    background-color: #ddd;
+                                    padding: 5px;
+                                    margin-top: 10px;
+                                    border-radius: 5px;
+                                " value="1" min="1" name="quantity" data-cesta-feira-attribute>                                    
                                 <input type="hidden" value="{{ asset('images/dishes/dinner/'.$item->item_name) }}" name="item_img" data-cesta-feira-attribute>                                    
                                 <input type="hidden" value="{{ strtok($item->item_name, ".") }}" name="product_name" data-cesta-feira-attribute>
                                 <input type="hidden" value="{{ number_format((float)$item->rate, 2, '.', '') }}" name="unity_price" data-cesta-feira-attribute>                                    

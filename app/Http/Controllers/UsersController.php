@@ -6,6 +6,7 @@ use App\User;
 use App\Proof;
 use App\Role;
 use App\SocialNetwork;
+use App\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;

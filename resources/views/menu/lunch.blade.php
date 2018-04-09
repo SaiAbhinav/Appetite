@@ -24,7 +24,7 @@
         <div class="row" style="margin-top:-10px;">
         @foreach($items as $item)            
             <div class="filterDiv2 {{ $item->category->category_name }} col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                <div class="card" style="margin-top:20px;border:none;">                  
+                <div class="card" style="margin-top:20px;border:none;">                                                
                     <img src="{{ asset('images/dishes/lunch/'.$item->item_name) }}" alt="{{ strtok($item->item_name, ".") }}" data-target="#{{ strtok($item->item_name, ".") }}Model" data-toggle="modal" style="min-height: 100px;max-height:200px;width:auto;border-top-left-radius: 5px;border-top-right-radius: 5px;" class="img-fluid">
                     <div class="row">                        
                         <div class="col-md-7 col-sm-7 col-xs-7 col-lg-7">
@@ -32,15 +32,24 @@
                                 <p>
                                     {{ strtok($item->item_name, ".") }}
                                     <br>
-                                    <strong style="color:#f00;">Price: {{ number_format((float)$item->rate, 2, '.', '') }}</strong>
+                                    <strong style="color:#f00;">Price: <i class="fas fa-rupee-sign"></i> {{ number_format((float)$item->rate, 2, '.', '') }}</strong>
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-5 col-lg-5 text-center">
                             <div class="d-flex justify-content-center">                              
-                                <form action="" class="form" data-cesta-feira-form>
+                                <form action="" class="form" onsubmit="showSnackBar('{{ strtok($item->item_name, ".") }}', this.quantity.value);" data-cesta-feira-form>
                                     @csrf
-                                    <input type="number" style="width:50px;" value="1" name="quantity" data-cesta-feira-attribute>                                    
+                                    <input type="number" style="
+                                        width: 50px;
+                                        text-align: center;
+                                        border: none;
+                                        font-weight: bold;
+                                        background-color: #ddd;
+                                        padding: 5px;
+                                        margin-top: 10px;
+                                        border-radius: 5px;
+                                    " value="1" min="1" name="quantity" data-cesta-feira-attribute>                                    
                                     <input type="hidden" value="{{ asset('images/dishes/lunch/'.$item->item_name) }}" name="item_img" data-cesta-feira-attribute>                                    
                                     <input type="hidden" value="{{ strtok($item->item_name, ".") }}" name="product_name" data-cesta-feira-attribute>
                                     <input type="hidden" value="{{ number_format((float)$item->rate, 2, '.', '') }}" name="unity_price" data-cesta-feira-attribute>                                    
